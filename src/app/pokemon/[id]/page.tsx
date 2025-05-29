@@ -18,7 +18,8 @@ type PokemonDetails = {
 }
 
 async function fetchPokemon(id: string): Promise<PokemonDetails> {
-    const result = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`, { next: { revalidate: 3600 } });
+    const api_url = process.env.NEXT_PUBLIC_API_URL_POKEMONS as string;
+    const result = await fetch(`${api_url}/${id}`, { next: { revalidate: 3600 } });
     const jsonResult = await result.json();
     //console.log(jsonResult);
     return ({
@@ -38,15 +39,15 @@ export default async function Pokemon({ params: { id } }: PokemonParam) {
 
     return (
         <main className={styles.main}>
-            <h1>Pokemon</h1>
+            
             <section className={styles.container}>{pokemon && (
                 <>
                     <h2 className={styles.pokemonName}>{pokemon.name}</h2>
                     <div className={styles.pokemonDetail}>
                         <section className={styles.detailSection}>
-                            <p className={styles.pokemonData}>Ability: {pokemon.ability}</p>
-                            <p className={styles.pokemonData}>Base EXP: {pokemon.baseExperience}</p>
-                            <p className={styles.pokemonData}>Height: {pokemon.height}</p>
+                            <p className={styles.pokemonData}>Habilidade: {pokemon.ability}</p>
+                            <p className={styles.pokemonData}>EXP Inicial: {pokemon.baseExperience}</p>
+                            <p className={styles.pokemonData}>Altura: {pokemon.height}</p>
                         </section>
                         <Image
                             src={pokemon.sprite}

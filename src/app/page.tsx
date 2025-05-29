@@ -11,13 +11,15 @@ type Pokemon = {
 }
 
 async function fetchPokemon(): Promise<Pokemon[]> {
+  const api_url = process.env.NEXT_PUBLIC_API_URL_POKEMONS as string;
+
   const result = await fetch("https://pokeapi.co/api/v2/pokemon?limit=151");
   const jsonResult = await result.json();
   
   const pokemonsWithSprites = await Promise.all(
     jsonResult.results.map(async (pokemon: Pokemon) => {
       const id = pokemon.url.split('/')[6];
-      const pokemonDetails = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+      const pokemonDetails = await fetch(`${api_url}/${id}`);
       const details = await pokemonDetails.json();
       return {
         ...pokemon,
